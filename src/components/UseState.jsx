@@ -3,9 +3,16 @@ import React from "react";
 const SECURITY_CODE = "paradigma";
 
 export const UseState = ({ name }) => {
-  const [value, setValue] = React.useState("");
-  const [error, setError] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  // const [value, setValue] = React.useState("");
+  // const [error, setError] = React.useState(false);
+  // const [loading, setLoading] = React.useState(false);
+  const [state, setState] = React.useState({
+    value: "",
+    error: false,
+    loading: false,
+  });
+
+  const { value, error, loading } = state;
 
   console.log(value);
 
@@ -14,11 +21,21 @@ export const UseState = ({ name }) => {
       // setError(false);
       setTimeout(() => {
         if (value === SECURITY_CODE) {
-          setError(false);
-          setLoading(false);
+          setState({
+            ...state,
+            error: false,
+            loading: false,
+          });
+          // setError(false);
+          // setLoading(false);
         } else {
-          setError(true);
-          setLoading(false);
+          setState({
+            ...state,
+            error: true,
+            loading: false,
+          });
+          // setError(true);
+          // setLoading(false);
         }
       }, 3000);
     }
@@ -39,13 +56,13 @@ export const UseState = ({ name }) => {
         value={value}
         onChange={(e) => {
           // setError(false);
-          setValue(e.target.value);
+          setState({ ...state, value: e.target.value });
         }}
       />
       <button
         onClick={() => {
           // setError(false);
-          setLoading(true);
+          setState({ ...state, loading: true });
         }}
       >
         Comprobar

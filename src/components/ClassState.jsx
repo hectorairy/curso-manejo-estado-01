@@ -1,10 +1,12 @@
 import React from "react";
 import { Loading } from "./Loading";
 
+const SECURITY_CODE = "paradigma";
 export class ClassState extends React.Component {
   constructor() {
     super();
     this.state = {
+      value: "",
       error: false,
       loading: false,
     };
@@ -19,12 +21,13 @@ export class ClassState extends React.Component {
   //   }
 
   componentDidUpdate() {
-    console.log("Actualizamos el componente ClassState");
     if (this.state.loading) {
       setTimeout(() => {
-        console.log("Empezando cambio del estado loading");
-        this.setState({ loading: false });
-        console.log("Terminando cambio del estado loading");
+        if (this.state.value === SECURITY_CODE) {
+          this.setState({ loading: false, error: false });
+        } else {
+          this.setState({ loading: false, error: true });
+        }
       }, 3000);
     }
   }
@@ -35,11 +38,18 @@ export class ClassState extends React.Component {
         <h1>Eliminar {this.props.name}</h1>
         <p>Por favor, escribe el código de seguridad.</p>
 
-        {this.state.error && <p>Error: el código es incorrecto</p>}
+        {!this.state.loading && this.state.error && (
+          <p>Error: el código es incorrecto</p>
+        )}
 
         {this.state.loading && <Loading />}
 
-        <input type="text" placeholder="Código de seguridad" />
+        <input
+          type="text"
+          placeholder="Código de seguridad"
+          value={this.state.value}
+          onChange={(e) => this.setState({ value: e.target.value })}
+        />
         <button onClick={() => this.setState({ loading: true })}>
           Comprobar
         </button>

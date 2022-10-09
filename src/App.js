@@ -1,5 +1,5 @@
 import "./App.css";
-import { ClassState } from "./components/ClassState";
+import { UseReducer } from "./components/UseReducer";
 import { UseState } from "./components/UseState";
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <UseState name="Use State" />
 
-      <ClassState name="Class State" />
+      <UseReducer name="Use Reducer" />
     </div>
   );
 }

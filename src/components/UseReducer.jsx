@@ -15,11 +15,11 @@ export const UseReducer = ({ name }) => {
       // setError(false);
       setTimeout(() => {
         if (value === SECURITY_CODE) {
-          dispatch({ type: "COMFIRM" });
+          dispatch({ type: actionTypes.confirm });
           // setError(false);
           // setLoading(false);
         } else {
-          dispatch({ type: "ERROR" });
+          dispatch({ type: actionTypes.error });
           // setError(true);
           // setLoading(false);
         }
@@ -43,13 +43,13 @@ export const UseReducer = ({ name }) => {
           value={value}
           onChange={(e) => {
             // setError(false);
-            dispatch({ type: "WRITE", payload: e.target.value });
+            dispatch({ type: actionTypes.write, payload: e.target.value });
           }}
         />
         <button
           onClick={() => {
             // setError(false);
-            dispatch({ type: "CHECK" });
+            dispatch({ type: actionTypes.check });
           }}
         >
           Comprobar
@@ -60,10 +60,10 @@ export const UseReducer = ({ name }) => {
     return (
       <>
         <p>Vamos a eliminar {name}, ¿Estás seguro de continuar?</p>
-        <button onClick={() => dispatch({ type: "DELETE" })}>
+        <button onClick={() => dispatch({ type: actionTypes.delete })}>
           Si, vamos a continuar
         </button>
-        <button onClick={() => dispatch({ type: "RESET" })}>
+        <button onClick={() => dispatch({ type: actionTypes.reset })}>
           No, ya me arrepentí
         </button>
       </>
@@ -72,7 +72,7 @@ export const UseReducer = ({ name }) => {
     return (
       <>
         <p>Ya borramos {name} :( </p>
-        <button onClick={() => dispatch({ type: "RESET" })}>
+        <button onClick={() => dispatch({ type: actionTypes.reset })}>
           Restaurar estado
         </button>
       </>
@@ -132,27 +132,36 @@ const initialState = {
 //   }
 // };
 
+const actionTypes = {
+  confirm: "CONFIRM",
+  error: "ERROR",
+  write: "WRITE",
+  check: "CHECK",
+  delete: "DELETE",
+  reset: "RESET",
+};
+
 const reducer = (state, action) => {
   const types = {
-    CONFIRM: {
+    [actionTypes.confirm]: {
       error: false,
       loading: false,
       confirmed: true,
     },
-    ERROR: {
+    [actionTypes.error]: {
       error: true,
       loading: false,
     },
-    WRITE: {
+    [actionTypes.write]: {
       value: action.payload,
     },
-    CHECK: {
+    [actionTypes.check]: {
       loading: true,
     },
-    DELETE: {
+    [actionTypes.delete]: {
       deleted: true,
     },
-    RESET: {
+    [actionTypes.reset]: {
       confirmed: false,
       deleted: false,
       value: "",

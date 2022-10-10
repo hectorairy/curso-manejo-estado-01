@@ -10,16 +10,29 @@ export const UseReducer = ({ name }) => {
 
   const { value, error, loading, confirmed, deleted } = state;
 
+  const onConfirm = () => dispatch({ type: actionTypes.confirm });
+
+  const onError = () => dispatch({ type: actionTypes.error });
+
+  const onWrite = ({ target: { value } }) =>
+    dispatch({ type: actionTypes.write, payload: value });
+
+  const onCheck = () => dispatch({ type: actionTypes.check });
+
+  const onDelete = () => dispatch({ type: actionTypes.delete });
+
+  const onReset = () => dispatch({ type: actionTypes.reset });
+
   React.useEffect(() => {
     if (loading) {
       // setError(false);
       setTimeout(() => {
         if (value === SECURITY_CODE) {
-          dispatch({ type: actionTypes.confirm });
+          onConfirm();
           // setError(false);
           // setLoading(false);
         } else {
-          dispatch({ type: actionTypes.error });
+          onError();
           // setError(true);
           // setLoading(false);
         }
@@ -41,40 +54,24 @@ export const UseReducer = ({ name }) => {
           type="text"
           placeholder="Código de seguridad"
           value={value}
-          onChange={(e) => {
-            // setError(false);
-            dispatch({ type: actionTypes.write, payload: e.target.value });
-          }}
+          onChange={onWrite}
         />
-        <button
-          onClick={() => {
-            // setError(false);
-            dispatch({ type: actionTypes.check });
-          }}
-        >
-          Comprobar
-        </button>
+        <button onClick={onCheck}>Comprobar</button>
       </div>
     );
   } else if (confirmed && !deleted) {
     return (
       <>
         <p>Vamos a eliminar {name}, ¿Estás seguro de continuar?</p>
-        <button onClick={() => dispatch({ type: actionTypes.delete })}>
-          Si, vamos a continuar
-        </button>
-        <button onClick={() => dispatch({ type: actionTypes.reset })}>
-          No, ya me arrepentí
-        </button>
+        <button onClick={onDelete}>Si, vamos a continuar</button>
+        <button onClick={onReset}>No, ya me arrepentí</button>
       </>
     );
   } else {
     return (
       <>
         <p>Ya borramos {name} :( </p>
-        <button onClick={() => dispatch({ type: actionTypes.reset })}>
-          Restaurar estado
-        </button>
+        <button onClick={onReset}>Restaurar estado</button>
       </>
     );
   }
